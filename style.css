@@ -20,6 +20,7 @@ li a {
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
+    transition-duration: 0.4s;
 }
 
 li a:hover:not(.active) {
@@ -34,4 +35,83 @@ li a:hover:not(.active) {
 
 body {
     padding-top: 20px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    background-image: url('arenaexterior.png');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    margin: 0;
+    padding: 0;
 }
+
+h1{
+    padding: 10px;
+    margin-top: 60px;
+    margin-left: 30px;
+    width: fit-content;
+    color: white;
+    background-color: #123c7c;
+}
+
+h2{
+    padding: 10px;
+    color: white;
+    background-color: #123c7c;
+    width: fit-content;
+}
+
+.timetabletext {
+    margin-left: 30px;
+}
+
+table {
+    border-collapse: collapse;
+    margin-left: 30px;
+    position: fixed;
+    background-color: #fff;
+    border: 2px solid #dee2e6;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+th,
+td {
+    border: 1px solid #dee2e6;
+    padding: 10px;
+    text-align: center;
+}
+
+th {
+    background-color: #f2f2f2;
+    color: #343a40;
+}
+
+.highlight {
+    background-color: #f8f9fa;
+}
+
+.special {
+    background-color: #f0f0f0;
+}
+
+.makebooking{
+    margin-left: 30px;
+    margin-top: 260px;
+    border: none;
+    display: inline-block;
+    padding: 16px 24px;
+    text-align: center;
+    background-color: #123c7c;
+    color: white;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 1.5em;
+    transition-duration: 0.4s;
+    width: fit-content;
+    height: fit-content;
+    border-radius: 8px;
+}
+
+.makebooking:hover {
+    background-color: #FFC423;
+    color: #123c7c;
+}
+
