@@ -22,8 +22,14 @@ li a {
     text-decoration: none;
 }
 
-li a:hover {
-    background-color: #00134A;
+li a:hover:not(.active) {
+    background-color: #FFC423;
+    color: #123c7c;
+}
+
+.active {
+    background-color: #FFC423;
+    color: #123c7c;
 }
 
 body {
