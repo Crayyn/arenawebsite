@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/x-icon" href="MTU-social-Profile-Logo.png">
+    <title>Home</title>
+</head>
+<body>
+    <ul class="navbar">
+        <li style="float: left; padding-top: 5px;"><a href ="home.html" id="arena logo" href="#" style="padding: 0;"><img src="mtuarenalogo.png" style="height: 35px;"></a></li>
+        <li><a href="account.html">Account</a></li>
+        <li><a href="news.html">News</a></li>
+        <li><a href="routine.html">Routines</a></li>
+        <li><a href="book.html">Book</a></li>
+        <li><a class="active" href="home.html">Home</a></li>
+    </ul>
+    <h1>Welcome "accountname"</h1>
+    <h2 class="timetabletext">Your Timetable:</h2>
+    <table id="timetable">
+        <tr>
+            <th>Day/Time</th>
+            <th>9:00-10:00</th>
+            <th>10:00-11:00</th>
+            <th>11:00-12:00</th>
+            <th>12:00-1:00</th>
+            <th>1:00-2:00</th>
+            <th>2:00-3:00</th>
+            <th>3:00-4:00</th>
+            <th>4:00-5:00</th>
+        </tr>
+        <tr class="monday">
+            <td class="highlight"><b>Monday</b></td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+        </tr>
+        <tr class="tuesday">
+            <td class="highlight"><b>Tuesday</b></td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+        </tr>
+        <tr class="wednesday">
+            <td class="highlight"><b>Wednesday</b></td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+        </tr>
+        <tr class="thursday">
+            <td class="highlight"><b>Thursday</b></td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+        </tr>
+        <tr class="friday">
+            <td class="highlight"><b>Friday</b></td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+        </tr>
+    </table>
+
+    <script>
+        function loadTimetable() {
+            fetch('/bookings')
+                .then(response => response.json())
+                .then(bookings => {
+                    bookings.forEach(booking => {
+                        // Find the row corresponding to the booking's day
+                        const dayRow = document.querySelector(`tr.${booking.day.toLowerCase()}`);
+                        if (dayRow) {
+                            // Map each start time to a specific column index
+                            const timeSlots = {
+                                "9am": 1,
+                                "10am": 2,
+                                "11am": 3,
+                                "12pm": 4,
+                                "1pm": 5,
+                                "2pm": 6,
+                                "3pm": 7,
+                                "4pm": 8
+                            };
+
+                            const startColumn = timeSlots[booking.time];
+                            const durationHours = parseInt(booking.duration); // e.g., 2 hours
+                            const endColumn = startColumn + durationHours - 1; // Calculate the ending column
+                            
+                            // Create the booking cell in the start time slot
+                            const bookingCell = dayRow.cells[startColumn];
+                            if (bookingCell) {
+                                bookingCell.textContent = `${booking.class}`;
+                                bookingCell.classList.add("special");
+                                bookingCell.colSpan = durationHours; // Span the correct number of hours
+                            }
+
+                            // Check if there are any overlapping cells and don't remove them; just leave them empty
+                            for (let i = startColumn + 1; i <= endColumn; i++) {
+                                const cellToCheck = dayRow.cells[i];
+                                if (cellToCheck && !cellToCheck.classList.contains("special")) {
+                                    cellToCheck.textContent = "--"; // Keep it empty if not booked
+                                }
+                            }
+                        }
+                    });
+                })
+                .catch(error => console.error('Error loading timetable:', error));
+        }
+
+        document.addEventListener("DOMContentLoaded", loadTimetable);
+    </script>
+
+    <button class="makebooking" onclick="document.location='book.html'">Make a Booking</button>
+</body>
+</html>

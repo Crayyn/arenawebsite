@@ -18,7 +18,7 @@
     </ul>
     </ul>
     <h1>Make a Booking</h1>
-    <form>
+    <form id="bookingForm">
         <label for="class">Class:</label>
         <select id="class" name="class">
             <option value="Spinning">Spinning</option>
@@ -58,7 +58,7 @@
             <option value="3 hours">3 hours</option>
         </select>
         <br>
-        <input type="submit" value="Submit">
+        <input type="submit" value="Submit" onclick="document.location='home.html'">
     </form>
 
     <script>
@@ -66,24 +66,42 @@
             const timeSelect = document.getElementById("time");
             const durationSelect = document.getElementById("duration");
 
-            for (let option of timeSelect.options) {
+            for (let option of durationSelect.options) {
                 option.disabled = false;
             }
 
             if (timeSelect.value === "3pm") {
-                for (let option of timeSelect.options) {
-                    if (["3 hour"].includes(option.value)) {
+                for (let option of durationSelect.options) {
+                    if (["3 hours"].includes(option.value)) {
                         option.disabled = true;
                     }
                 }
             } else if (timeSelect.value === "4pm") {
-                for (let option of timeSelect.options) {
-                    if (["2 hour", "3 hour"].includes(option.value)) {
+                for (let option of durationSelect.options) {
+                    if (["2 hours", "3 hours"].includes(option.value)) {
                         option.disabled = true;
                     }
                 }
             }
         }
+
+        document.getElementById("bookingForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const selectedClass = document.getElementById("class").value;
+            const day = document.getElementById("date").value;
+            const time = document.getElementById("time").value;
+            const duration = document.getElementById("duration").value;
+
+            fetch('/book', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ class: selectedClass, day, time, duration })
+            })
+            .then(response => response.json())
+            .then(data => alert(data.message))
+            .catch(error => console.error('Error:', error));
+        });
 
     </script>
 
