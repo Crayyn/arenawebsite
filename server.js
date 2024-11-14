@@ -25,8 +25,8 @@ const getBookings = () => {
 
 // Save a new booking
 app.post('/book', (req, res) => {
-    const { class: selectedClass, day, time, duration } = req.body;
-    const newBooking = { class: selectedClass, day, time, duration };
+    const { class: selectedClass, week, day, time} = req.body;
+    const newBooking = { class: selectedClass, week, day, time};
 
     const bookings = getBookings();
     bookings.push(newBooking);

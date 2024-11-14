@@ -1,32 +1,23 @@
 [
   {
     "class": "Spinning",
-    "day": "Thursday",
-    "time": "9am",
-    "duration": "1 hour"
+    "day": "Monday",
+    "time": "9am"
   },
   {
-    "class": "HIIT",
-    "day": "Thursday",
-    "time": "2pm",
-    "duration": "3 hours"
+    "class": "Spinning",
+    "day": "Friday",
+    "time": "4pm"
   },
   {
     "class": "Spinning",
     "day": "Monday",
-    "time": "9am",
-    "duration": "3 hours"
+    "time": "11am"
   },
   {
     "class": "Spinning",
-    "day": "Monday",
-    "time": "4pm",
-    "duration": "1 hour"
-  },
-  {
-    "class": "Spinning",
-    "day": "Monday",
-    "time": "3pm",
-    "duration": "1 hour"
+    "week": "week 3",
+    "day": "Wednesday",
+    "time": "1pm"
   }
 ]

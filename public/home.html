@@ -109,24 +109,18 @@
                             };
 
                             const startColumn = timeSlots[booking.time];
-                            const durationHours = parseInt(booking.duration); // e.g., 2 hours
-                            const endColumn = startColumn + durationHours - 1; // Calculate the ending column
+                            
                             
                             // Create the booking cell in the start time slot
                             const bookingCell = dayRow.cells[startColumn];
                             if (bookingCell) {
                                 bookingCell.textContent = `${booking.class}`;
                                 bookingCell.classList.add("special");
-                                bookingCell.colSpan = durationHours; // Span the correct number of hours
+                                
+                                bookingCell.colSpan = 1; 
                             }
 
-                            // Check if there are any overlapping cells and don't remove them; just leave them empty
-                            for (let i = startColumn + 1; i <= endColumn; i++) {
-                                const cellToCheck = dayRow.cells[i];
-                                if (cellToCheck && !cellToCheck.classList.contains("special")) {
-                                    cellToCheck.textContent = "--"; // Keep it empty if not booked
-                                }
-                            }
+                            
                         }
                     });
                 })
