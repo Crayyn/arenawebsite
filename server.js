@@ -22,11 +22,10 @@ const getBookings = () => {
     }
 };
 
-
 // Save a new booking
 app.post('/book', (req, res) => {
-    const { class: selectedClass, week, day, time} = req.body;
-    const newBooking = { class: selectedClass, week, day, time};
+    const { class: selectedClass, week, day, time } = req.body;
+    const newBooking = { class: selectedClass, week, day, time };
 
     const bookings = getBookings();
     bookings.push(newBooking);
@@ -35,10 +34,17 @@ app.post('/book', (req, res) => {
     res.send({ message: 'Booking saved successfully!' });
 });
 
-// Get all bookings for the timetable
+// Get bookings for a specific week and day
 app.get('/bookings', (req, res) => {
+    const { week, day } = req.query; // Get week and day from query parameters
     const bookings = getBookings();
-    res.json(bookings);
+
+    // Filter bookings by the selected week and day (if provided)
+    const filteredBookings = bookings.filter(booking => 
+        (week ? booking.week === week : true) && 
+        (day ? booking.day === day : true)
+    );
+    res.json(filteredBookings); // Send the filtered bookings as JSON
 });
 
 // Serve the home page by default when accessing the root URL

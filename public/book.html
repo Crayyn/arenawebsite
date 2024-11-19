@@ -31,25 +31,26 @@
         </select>
         <br>
         <label for="week">Week:</label>
-        <select id="week" name="week">
-            <option value="week 1">Week 1</option>
-            <option value="week 2">Week 2</option>
-            <option value="week 3">Week 3</option>
-            <option value="week 4">Week 4</option>
-            <option value="week 5">Week 5</option>
-        </select>
-        <br>
-        <label for="day">Day:</label>
-        <select id="date" name="date">
-            <option value="Monday">Monday</option>
-            <option value="Tuesday">Tuesday</option>
-            <option value="Wednesday">Wednesday</option>
-            <option value="Thursday">Thursday</option>
-            <option value="Friday">Friday</option>
-        </select>
+<select id="week" name="week" onchange="updateAvailableTimes()">
+    <option value="week 1">Week 1</option>
+    <option value="week 2">Week 2</option>
+    <option value="week 3">Week 3</option>
+    <option value="week 4">Week 4</option>
+    <option value="week 5">Week 5</option>
+</select>
+<br>
+<label for="day">Day:</label>
+<select id="date" name="date" onchange="updateAvailableTimes()">
+    <option value="Monday">Monday</option>
+    <option value="Tuesday">Tuesday</option>
+    <option value="Wednesday">Wednesday</option>
+    <option value="Thursday">Thursday</option>
+    <option value="Friday">Friday</option>
+</select>
         <br>
         <label for="time">Time:</label>
-        <select id="time" name="time">
+        <select id="time" name="time" onchange="updateAvailableTimes()">
+            <option>--</option>
             <option value="9am">9am</option>
             <option value="10am">10am</option>
             <option value="11am">11am</option>
@@ -61,11 +62,42 @@
         </select>
         <br>
         
-        <input type="submit" value="Submit" onclick="document.location='home.html'">
+        <input type="submit" value="Submit" ">
     </form>
 
     <script>
-       
+        async function updateAvailableTimes() {
+            const week = document.getElementById("week").value;
+            const day = document.getElementById("date").value;
+            const timeSelect = document.getElementById("time");
+
+            // Fetch bookings for the selected week and day
+            const response = await fetch(`/bookings?week=${encodeURIComponent(week)}&day=${encodeURIComponent(day)}`);
+            const bookings = await response.json();
+
+            // Extract the times that are already booked
+            const bookedTimes = bookings.map(booking => booking.time);
+
+            // Enable all options first
+            Array.from(timeSelect.options).forEach(option => {
+                option.disabled = false;
+            });
+
+            // Disable options that are already booked
+            bookedTimes.forEach(bookedTime => {
+                const option = Array.from(timeSelect.options).find(opt => opt.value === bookedTime);
+                if (option) {
+                    option.disabled = true;
+                }
+            });
+        }
+
+        // Call updateAvailableTimes when the page loads
+        document.addEventListener("DOMContentLoaded", function() {
+            updateAvailableTimes();
+        });
+
+
         document.getElementById("bookingForm").addEventListener("submit", function(event) {
             event.preventDefault();
 
@@ -74,14 +106,21 @@
             const day = document.getElementById("date").value;
             const time = document.getElementById("time").value;
 
+            if (time === "--") {
+                alert("Please select a time.");
+                return;
+            }
+
             fetch('/book', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ class: selectedClass, week, day, time })
+                body: JSON.stringify({ class: selectedClass, week, day, time }),
             })
             .then(response => response.json())
             .then(data => alert(data.message))
             .catch(error => console.error('Error:', error));
+            
+            location.href = "home.html";
         });
 
     </script>

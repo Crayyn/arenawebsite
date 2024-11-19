@@ -18,6 +18,15 @@
     </ul>
     <h1>Welcome "accountname"</h1>
     <h2 class="timetabletext">Your Timetable:</h2>
+    
+    <div class="timetablebuttons">
+        <button class="selected" onclick="changeWeek('week 1')">Week 1</button>
+        <button onclick="changeWeek('week 2')">Week 2</button>
+        <button onclick="changeWeek('week 3')">Week 3</button>
+        <button onclick="changeWeek('week 4')">Week 4</button>
+        <button onclick="changeWeek('week 5')">Week 5</button>
+    </div>
+    
     <table id="timetable">
         <tr>
             <th>Day/Time</th>
@@ -87,16 +96,29 @@
         </tr>
     </table>
 
+    <button class="makebooking" onclick="document.location='book.html'">Make a Booking</button>
+
     <script>
-        function loadTimetable() {
-            fetch('/bookings')
+        function loadTimetable(week = 'week 1') {
+            fetch(`/bookings?week=${week}`)
                 .then(response => response.json())
                 .then(bookings => {
+                    // Clear the timetable
+                    const rows = document.querySelectorAll('#timetable tr');
+                    rows.forEach((row, index) => {
+                        if (index > 0) { // Skip the header row
+                            const cells = row.cells;
+                            for (let i = 1; i < cells.length; i++) { // Skip the day label cell
+                                cells[i].textContent = '--';
+                                cells[i].classList.remove('special');
+                            }
+                        }
+                    });
+
+                    // Populate the timetable with the filtered bookings
                     bookings.forEach(booking => {
-                        // Find the row corresponding to the booking's day
                         const dayRow = document.querySelector(`tr.${booking.day.toLowerCase()}`);
                         if (dayRow) {
-                            // Map each start time to a specific column index
                             const timeSlots = {
                                 "9am": 1,
                                 "10am": 2,
@@ -109,27 +131,40 @@
                             };
 
                             const startColumn = timeSlots[booking.time];
-                            
-                            
-                            // Create the booking cell in the start time slot
                             const bookingCell = dayRow.cells[startColumn];
                             if (bookingCell) {
                                 bookingCell.textContent = `${booking.class}`;
-                                bookingCell.classList.add("special");
-                                
-                                bookingCell.colSpan = 1; 
+                                bookingCell.classList.add('special');
                             }
-
-                            
                         }
                     });
                 })
                 .catch(error => console.error('Error loading timetable:', error));
         }
 
-        document.addEventListener("DOMContentLoaded", loadTimetable);
+        // Handle week changes
+        function changeWeek(week) {
+            // Remove .selected class from all buttons
+            var buttons = document.querySelectorAll('.timetablebuttons button');
+            buttons.forEach(function(button) {
+                button.classList.remove('selected');
+            });
+
+            // Add .selected class to the newly clicked button
+            var selectedButton = document.querySelector('.timetablebuttons button[onclick="changeWeek(\'' + week + '\')"]');
+            selectedButton.classList.add('selected');
+
+            // Load the timetable for the selected week
+            loadTimetable(week);
+        }
+
+
+
+        // Load the timetable for the default week when the page loads
+        document.addEventListener("DOMContentLoaded", () => loadTimetable());
+
     </script>
 
-    <button class="makebooking" onclick="document.location='book.html'">Make a Booking</button>
+    
 </body>
 </html>

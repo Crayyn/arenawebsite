@@ -1,16 +1,19 @@
 [
   {
     "class": "Spinning",
+    "week": "week 1",
     "day": "Monday",
     "time": "9am"
   },
   {
     "class": "Spinning",
+    "week": "week 1",
     "day": "Friday",
     "time": "4pm"
   },
   {
     "class": "Spinning",
+    "week": "week 2",
     "day": "Monday",
     "time": "11am"
   },
@@ -19,5 +22,65 @@
     "week": "week 3",
     "day": "Wednesday",
     "time": "1pm"
+  },
+  {
+    "class": "Spinning",
+    "week": "week 4",
+    "day": "Monday",
+    "time": "9am"
+  },
+  {
+    "class": "Spinning",
+    "week": "week 5",
+    "day": "Monday",
+    "time": "12pm"
+  },
+  {
+    "class": "Spinning",
+    "week": "week 1",
+    "day": "Monday",
+    "time": "4pm"
+  },
+  {
+    "class": "Spinning",
+    "week": "week 1",
+    "day": "Monday",
+    "time": "10am"
+  },
+  {
+    "class": "Spinning",
+    "week": "week 1",
+    "day": "Monday",
+    "time": "11am"
+  },
+  {
+    "class": "Spinning",
+    "week": "week 1",
+    "day": "Monday",
+    "time": "12pm"
+  },
+  {
+    "class": "Spinning",
+    "week": "week 1",
+    "day": "Monday",
+    "time": "1pm"
+  },
+  {
+    "class": "Spinning",
+    "week": "week 1",
+    "day": "Monday",
+    "time": "2pm"
+  },
+  {
+    "class": "Spinning",
+    "week": "week 1",
+    "day": "Monday",
+    "time": "3pm"
+  },
+  {
+    "class": "Spinning",
+    "week": "week 3",
+    "day": "Friday",
+    "time": "9am"
   }
 ]
