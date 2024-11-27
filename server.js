@@ -4,6 +4,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, set, child, get } from "firebase/database";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 
 const PORT = 3000;
 
@@ -26,6 +27,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
 const database = getDatabase(firebaseApp);
+const auth = getAuth(firebaseApp);
 
 const app = express();
 
@@ -86,13 +88,44 @@ app.get('/bookings', async (req, res) => {
     res.json(filteredBookings);
 });
 
+// Authentication Routes
+// Signup
+app.post('/signup', async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        // Optionally, save user information to the database
+        await set(ref(database, 'users/' + user.uid), { email });
+
+        res.status(201).send({ message: 'User created successfully!', user: { uid: user.uid, email: user.email } });
+    } catch (error) {
+        res.status(400).send({ error: error.message });
+    }
+});
+
+// Login
+app.post('/login', async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        res.send({ message: 'Login successful!', user: { uid: user.uid, email: user.email } });
+    } catch (error) {
+        res.status(400).send({ error: error.message });
+    }
+});
 
 // Serve the home page by default when accessing the root URL
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'home.html'));
+    res.sendFile(path.join(__dirname, 'public', 'home.html'));
 });
 
 // Start the server
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+    console.log(`Server is running on http://localhost:${PORT}`);
 });

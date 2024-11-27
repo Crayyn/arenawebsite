@@ -6,16 +6,68 @@
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/x-icon" href="MTU-social-Profile-Logo.png">
     <title>Account</title>
+    <script type="module">
+        // Import Firebase modules
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+        import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBxhgYXLDxVnmWBbzClvlkiis-e7ZcwQgs",
+            authDomain: "mtuarenawebsite.firebaseapp.com",
+            projectId: "mtuarenawebsite",
+            storageBucket: "mtuarenawebsite.appspot.com",
+            messagingSenderId: "661123771329",
+            appId: "1:661123771329:web:27cc71b0cb9a8ebad2dd40",
+            measurementId: "G-K7ZPBF4Y5B"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // Check if the user is logged in
+        auth.onAuthStateChanged((user) => {
+            if (!user) {
+                // If no user is logged in, redirect to the login page
+                window.location.href = "login.html";
+            } else {
+                document.getElementById('welcome-message').innerHTML = `<h2>Welcome, ${user.email}</h2>`;
+            }
+        });
+
+        // Handle Logout
+        document.getElementById('logout-button').addEventListener('click', async () => {
+            try {
+                await signOut(auth);
+                localStorage.removeItem('authToken'); // Remove the auth token
+                alert('Logged out successfully!');
+                window.location.href = 'login.html'; // Redirect to login page after logout
+            } catch (error) {
+                alert('Logout failed: ' + error.message);
+            }
+        });
+    </script>
 </head>
 <body>
     <ul class="navbar">
-        <li style="float: left; padding-top: 5px;"><a href ="home.html" id="arena logo" href="#" style="padding: 0;"><img src="mtuarenalogo.png" style="height: 35px;"></a></li>
+        <li style="float: left; padding-top: 5px;">
+            <a href="home.html" id="arena logo" style="padding: 0;">
+                <img src="mtuarenalogo.png" style="height: 35px;">
+            </a>
+        </li>
         <li><a class="active" href="account.html">Account</a></li>
         <li><a href="news.html">News</a></li>
         <li><a href="routine.html">Routines</a></li>
         <li><a href="book.html">Book</a></li>
         <li><a href="home.html">Home</a></li>
     </ul>
+
     <h1>Account</h1>
+
+    <div id="welcome-message"></div>
+
+    <!-- Logout Button -->
+    <button id="logout-button" style="padding-left: 10px;">Logout</button>
 </body>
 </html>
