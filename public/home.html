@@ -6,6 +6,36 @@
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/x-icon" href="MTU-social-Profile-Logo.png">
     <title>Home</title>
+    <script type="module">
+        // Import Firebase modules
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+        import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBxhgYXLDxVnmWBbzClvlkiis-e7ZcwQgs",
+            authDomain: "mtuarenawebsite.firebaseapp.com",
+            projectId: "mtuarenawebsite",
+            storageBucket: "mtuarenawebsite.appspot.com",
+            messagingSenderId: "661123771329",
+            appId: "1:661123771329:web:27cc71b0cb9a8ebad2dd40",
+            measurementId: "G-K7ZPBF4Y5B"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // Check if the user is logged in
+        auth.onAuthStateChanged((user) => {
+            if (!user) {
+                
+                document.getElementById('welcome-message').innerHTML = `<h1>Welcome to MTU Arena</h1>`;
+            } else {
+                document.getElementById('welcome-message').innerHTML = `<h1>Welcome, ${user.email}</h1>`;
+            }
+        });
+    </script>
 </head>
 <body>
     <ul class="navbar">
@@ -16,7 +46,9 @@
         <li><a href="book.html">Book</a></li>
         <li><a class="active" href="home.html">Home</a></li>
     </ul>
-    <h1>Welcome "accountname"</h1>
+
+    <div id="welcome-message"></div>
+
     <h2 class="timetabletext">Your Timetable:</h2>
     
     <div class="timetablebuttons">
